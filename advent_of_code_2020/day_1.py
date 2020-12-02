@@ -17,11 +17,15 @@ def main():
     data = load_data()
 
     combination = match_by_sum_and_multiply(data, 2, 2020)
-    print(f"Set: {*combination,}, Sum: {sum(combination)}, Product: {prod(combination)}")
+    print(
+        f"Set: {*combination,}, Sum: {sum(combination)}, Product: {prod(combination)}"
+    )
 
     combination = match_by_sum_and_multiply(data, 3, 2020)
-    print(f"Set: {*combination,}, Sum: {sum(combination)}, Product: {prod(combination)}")
+    print(
+        f"Set: {*combination,}, Sum: {sum(combination)}, Product: {prod(combination)}"
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
