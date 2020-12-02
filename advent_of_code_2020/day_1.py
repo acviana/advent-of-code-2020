@@ -3,7 +3,7 @@ from math import prod
 
 
 def load_data():
-    with open("advent_of_code_2020/input_1.txt", "r") as f:
+    with open("inputs/day_1_input.txt", "r") as f:
         return [int(item.strip()) for item in f.readlines()]
 
 
