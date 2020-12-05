@@ -17,78 +17,100 @@ def tokenizer(group):
     return {item.split(":")[0]: item.split(":")[1] for item in group.strip().split(" ")}
 
 
-def check_credentials(credentials):
+def check_credential_fields(credentials):
     required_fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
     credentials.pop("cid", None)
-    return set(credentials.keys()) == set(required_fields)
+    return True if (set(credentials.keys()) == set(required_fields)) else False
 
 
-def main():
-    data = load_data()
+def check_year(year, lower_limit, upper_limit):
+    # ValueError?
+    year = int(year)
+    return True if year >= lower_limit and year <= upper_limit else False
+
+
+def check_height(height):
+    units = height[-2:]
+    measurement = height[:-2]
+    if not measurement.isdigit():
+        return False
+    measurement = int(measurement)
+    if units not in ["in", "cm"]:
+        return False
+    if units == "cm":
+        return True if measurement >= 150 and measurement <= 193 else False
+    if units == "in":
+        return True if measurement >= 59 and measurement <= 76 else False
+
+
+def check_hair_color(hair_color):
+    # I refuse to do this regex
+    if hair_color[0] != "#":
+        return False
+    allowed_characters = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+    ]
+    for character in hair_color[1:]:
+        if character not in allowed_characters:
+            return False
+    return True
+
+
+def check_eye_color(eye_color):
+    allowed_values = set(["amb", "blu", "brn", "gry", "grn", "hzl", "oth"])
+    return True if eye_color in allowed_values else False
+
+
+def check_passport_id(passport_id):
+    if not passport_id.isdigit():
+        return False
+    return True if len(passport_id) == 9 else False
+
+
+def check_credentials(credentials):
+    if not check_credential_fields(credentials):
+        return False
+    if not check_year(credentials["byr"], 1920, 2002):
+        return False
+    if not check_year(credentials["iyr"], 2010, 2020):
+        return False
+    if not check_year(credentials["eyr"], 2020, 2030):
+        return False
+    if not check_height(credentials["hgt"]):
+        return False
+    if not check_hair_color(credentials["hcl"]):
+        return False
+    if not check_eye_color(credentials["ecl"]):
+        return False
+    if not check_passport_id(credentials["pid"]):
+        return False
+    return True
+
+
+def main(data):
     print(f"Loaded {len(data)} rows of data")
     split_data = get_split_data(data)
     print(f"Found {len(split_data)} sets of credentials")
     tokenized_data = [tokenizer(item) for item in split_data]
-    valid_credential_count = sum([check_credentials(item) for item in tokenized_data])
+    valid_credentials = [check_credentials(item) for item in tokenized_data]
+    valid_credential_count = sum(valid_credentials)
     print(f"Found {valid_credential_count} valid credentials")
 
 
-def test_foo():
-    test_result = get_split_data(load_data()[0:13])
-    expected_result = [
-        "byr:1983 iyr:2017 pid:796082981 cid:129 eyr:2030 ecl:oth hgt:182cm",
-        " iyr:2019 cid:314 eyr:2039 hcl:#cfa07d hgt:171cm ecl:#0180ce byr:2006 pid:8204115568",
-        " byr:1991 eyr:2022 hcl:#341e13 iyr:2016 pid:729933757 hgt:167cm ecl:gry",
-        " hcl:231d64 cid:124 ecl:gmt eyr:2039 hgt:189in pid:#9c3ea1",
-    ]
-    assert test_result == expected_result
-
-    test_result = [tokenizer(item) for item in expected_result]
-    expected_result = [
-        {
-            "byr": "1983",
-            "cid": "129",
-            "ecl": "oth",
-            "eyr": "2030",
-            "hgt": "182cm",
-            "iyr": "2017",
-            "pid": "796082981",
-        },
-        {
-            "byr": "2006",
-            "cid": "314",
-            "ecl": "#0180ce",
-            "eyr": "2039",
-            "hcl": "#cfa07d",
-            "hgt": "171cm",
-            "iyr": "2019",
-            "pid": "8204115568",
-        },
-        {
-            "byr": "1991",
-            "ecl": "gry",
-            "eyr": "2022",
-            "hcl": "#341e13",
-            "hgt": "167cm",
-            "iyr": "2016",
-            "pid": "729933757",
-        },
-        {
-            "cid": "124",
-            "ecl": "gmt",
-            "eyr": "2039",
-            "hcl": "231d64",
-            "hgt": "189in",
-            "pid": "#9c3ea1",
-        },
-    ]
-    assert test_result == expected_result
-
-    test_result = [check_credentials(item) for item in expected_result]
-    expected_result = [False, True, True, False]
-    assert test_result == expected_result
-
-
 if __name__ == "__main__":
-    test_foo()
-    main()
+    main(data=load_data())
