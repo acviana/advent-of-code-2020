@@ -1,9 +1,12 @@
-def load_data() -> list:
+from typing import List
+
+
+def load_data() -> List[str]:
     with open("inputs/day_6_input.txt") as f:
         return [item.strip() for item in f.readlines()]
 
 
-def get_split_data(data) -> list:
+def get_split_data(data: List[str]) -> List[str]:
     output = [data[0]]
     for item in data[1:]:
         if item != "":
@@ -13,17 +16,17 @@ def get_split_data(data) -> list:
     return output
 
 
-def get_unique_answers(answers) -> set:
+def get_unique_answers(answers: str) -> set:
     output = set(answers)
     output.discard(" ")
     return output
 
 
-def get_unanimous_answers(answers) -> set:
+def get_unanimous_answers(answers: str) -> set:
     return set.intersection(*[set(item) for item in answers.split()])
 
 
-def main():
+def main() -> None:
     data = get_split_data(load_data())
     print(f"Dataset contains {len(data)} items")
     unique_yes_answers_per_group = [len(get_unique_answers(item)) for item in data]
