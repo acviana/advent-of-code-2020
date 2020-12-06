@@ -1,6 +1,6 @@
 from advent_of_code_2020.day_5 import (
     binary_partition,
-    parse_seat_instrcutions,
+    parse_seat_instructions,
     get_seat_id,
 )
 
@@ -19,8 +19,8 @@ def test_binary_partition():
 
 
 def test_parse_seat_instrucionts():
-    assert parse_seat_instrcutions("FBFBBFFRLR", 128)["top"] == 44
-    assert parse_seat_instrcutions("RLR", 8)["top"] == 5
+    assert parse_seat_instructions("FBFBBFFRLR", 128)["top"] == 44
+    assert parse_seat_instructions("RLR", 8)["top"] == 5
 
 
 def test_get_seat_id():
