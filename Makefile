@@ -4,7 +4,10 @@ black:
 flake8:
 	flake8 advent_of_code_2020/ --statistics
 
-pre-commit: black flake8
+mypy:
+	mypy advent_of_code_2020/
+
+pre-commit: black flake8 mypy
 
 setup-day:
 	touch advent_of_code_2020/day_$(day).py
