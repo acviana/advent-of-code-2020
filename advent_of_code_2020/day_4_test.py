@@ -7,6 +7,7 @@ from advent_of_code_2020.day_4 import (
     check_credential_fields,
     get_split_data,
     load_data,
+    parse_height,
     tokenizer,
 )
 
@@ -116,25 +117,38 @@ def test_check_credential_fields():
 
 
 def test_check_year():
-    assert check_year("1920", 1920, 2002)
-    assert check_year("1974", 1920, 2002)
-    assert check_year("1921", 1920, 2002)
-    assert check_year("2002", 1920, 2002)
-    # assert not check_year("aa", 1920, 2002)
+    assert check_year(int("1920"), 1920, 2002)
+    assert check_year(int("1974"), 1920, 2002)
+    assert check_year(int("1921"), 1920, 2002)
+    assert check_year(int("2002"), 1920, 2002)
+
+
+def test_parse_height():
+    assert parse_height("149cm") == {"measurement": 149, "units": "cm"}
+    assert parse_height("150cm") == {"measurement": 150, "units": "cm"}
+    assert parse_height("151cm") == {"measurement": 151, "units": "cm"}
+    assert parse_height("192cm") == {"measurement": 192, "units": "cm"}
+    assert parse_height("193cm") == {"measurement": 193, "units": "cm"}
+    assert parse_height("194cm") == {"measurement": 194, "units": "cm"}
+
+    assert parse_height("60in") == {"measurement": 60, "units": "in"}
+    assert parse_height("190cm") == {"measurement": 190, "units": "cm"}
+    assert parse_height("190in") == {"measurement": 190, "units": "in"}
+    # assert parse_height("190") == {"190"}
 
 
 def test_check_height():
-    assert not check_height("149cm")
-    assert check_height("150cm")
-    assert check_height("151cm")
-    assert check_height("192cm")
-    assert check_height("193cm")
-    assert not check_height("194cm")
+    assert not check_height(**parse_height("149cm"))
+    assert check_height(**parse_height("150cm"))
+    assert check_height(**parse_height("151cm"))
+    assert check_height(**parse_height("192cm"))
+    assert check_height(**parse_height("193cm"))
+    assert not check_height(**parse_height("194cm"))
 
-    assert check_height("60in")
-    assert check_height("190cm")
-    assert not check_height("190in")
-    assert not check_height("190")
+    assert check_height(**parse_height("60in"))
+    assert check_height(**parse_height("190cm"))
+    assert not check_height(**parse_height("190in"))
+    # assert not check_height("190")
 
 
 def test_check_hair_color():
