@@ -1,7 +1,8 @@
 from advent_of_code_2020.day_7 import (
     check_color,
-    count_containing_bags,
+    count_possible_bag_colors,
     parse_data,
+    sum_tree,
 )
 
 
@@ -14,6 +15,15 @@ TEST_DATA = """light red bags contain 1 bright white bag, 2 muted yellow bags.
     vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
     faded blue bags contain no other bags.
     dotted black bags contain no other bags."""
+
+
+TEST_DATA_2 = """shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags."""
 
 TEST_PARSED_DATA = {
     "bright white": {"shiny gold": 1},
@@ -46,5 +56,16 @@ def test_check_color():
     assert not check_color(TEST_PARSED_DATA, "vibrant plum", "shiny gold")
 
 
-def test_count_containing_bags():
-    assert count_containing_bags(TEST_PARSED_DATA, "shiny gold")
+def test_count_possible_bag_colors():
+    assert count_possible_bag_colors(TEST_PARSED_DATA, "shiny gold") == 4
+
+
+def test_sum_tree():
+    assert sum_tree(TEST_PARSED_DATA, "faded blue") == 1
+    assert sum_tree(TEST_PARSED_DATA, "dotted black") == 1
+    assert sum_tree(TEST_PARSED_DATA, "vibrant plum") == 12
+    assert sum_tree(TEST_PARSED_DATA, "dark olive") == 8
+    assert sum_tree(TEST_PARSED_DATA, "shiny gold") == 33
+
+    TEST_PARSED_DATA_2 = parse_data([item.strip() for item in TEST_DATA_2.split("\n")])
+    assert sum_tree(TEST_PARSED_DATA_2, "shiny gold") == 126
