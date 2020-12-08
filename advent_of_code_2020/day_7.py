@@ -23,11 +23,11 @@ def parse_rule(rule: str) -> Dict[str, Dict[str, int]]:
     return {bag_color: parse_allowed_contents(allowed_contents)}
 
 
-def parse_data(data):
+def parse_data(data: List[str]) -> Dict[str, Dict[str, int]]:
     return dict(ChainMap(*[parse_rule(item) for item in data]))
 
 
-def check_color(data, key, search_term):
+def check_color(data: Dict[str, Dict[str, int]], key: str, search_term: str) -> bool:
     if data[key] == {}:
         return False
     if search_term in data[key]:
@@ -40,19 +40,14 @@ def check_color(data, key, search_term):
         )
 
 
-def sum_tree(data, key):
+def sum_tree(data: Dict[str, Dict[str, int]], key: str) -> int:
     if data[key] == {}:
         return 1
     else:
-        return sum(
-            [
-                (data[key][item] * sum_tree(data, item))
-                for item in data[key]
-            ]
-        ) + 1
+        return sum([(data[key][item] * sum_tree(data, item)) for item in data[key]]) + 1
 
 
-def count_possible_bag_colors(data, color):
+def count_possible_bag_colors(data: Dict[str, Dict[str, int]], color: str) -> int:
     return sum([check_color(data, item, color) for item in data])
 
 
@@ -62,7 +57,9 @@ def main() -> None:
     parsed_data = parse_data(data)
     result = count_possible_bag_colors(parsed_data, "shiny gold")
     print(f"Found {result} bags that can contain 'shiny gold' bags")
-    print(sum_tree(parsed_data, "shiny gold") - 1)
+
+    total_nested_bags = sum_tree(parsed_data, "shiny gold") - 1
+    print(f"Found {total_nested_bags} total nested bags")
 
 
 if __name__ == "__main__":
