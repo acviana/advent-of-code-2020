@@ -1,4 +1,9 @@
-from advent_of_code_2020.day_8 import execute_instruction, parse_data, run_program
+from advent_of_code_2020.day_8 import (
+    execute_instruction,
+    parse_data,
+    run_altered_program,
+    run_program,
+)
 
 TEST_DATA = """nop +0
 acc +1
@@ -46,4 +51,11 @@ def test_run_program():
     assert run_program(TEST_PARSED_DATA) == {
         "accumulator": 5,
         "termination_mode": "repeat",
+    }
+
+
+def test_run_altered_program():
+    assert run_altered_program(TEST_PARSED_DATA) == {
+        "accumulator": 8,
+        "termination_mode": "exit",
     }

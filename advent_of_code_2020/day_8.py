@@ -1,4 +1,5 @@
 from typing import Dict, List
+import copy
 
 
 def load_data() -> List[str]:
@@ -36,28 +37,50 @@ def execute_instruction(
         assert False
 
 
-def run_program(instructions):
+def run_program(instructions: List[Dict]) -> Dict:
     previous_positions = set()
     position = 0
     accumulator = 0
     while position not in previous_positions:
         previous_positions.add(position)
-        try:
-            response = execute_instruction(
-                position=position, accumulator=accumulator, **instructions[position]
-            )
-        except IndexError:
-            return {"accumulator": accumulator, "termination_mode": "exit"}
+        response = execute_instruction(
+            position=position, accumulator=accumulator, **instructions[position]
+        )
+        if response["position"] >= len(instructions):
+            return {"accumulator": response["accumulator"], "termination_mode": "exit"}
         position = response["position"]
         accumulator = response["accumulator"]
     return {"accumulator": accumulator, "termination_mode": "repeat"}
 
 
+def run_altered_program(parsed_data: List[Dict]) -> Dict:
+    for position, instruction in enumerate(parsed_data):
+        if instruction["operation"] == "acc":
+            continue
+        altered_parsed_data = copy.deepcopy(parsed_data)
+        altered_parsed_data[position]["operation"] = (
+            "nop" if altered_parsed_data[position]["operation"] == "jmp" else "jmp"
+        )
+        response = run_program(altered_parsed_data)
+        if response["termination_mode"] == "exit":
+            return response
+    assert False
+
+
 def main() -> None:
     data = load_data()
     parsed_data = parse_data(data)
-    accumulator = run_program(parsed_data)
-    print(accumulator)
+    response = run_program(parsed_data)
+    print(
+        f"Original program exited with status {response['termination_mode']} "
+        f"and accumulator value {response['accumulator']}"
+    )
+
+    response = run_altered_program(parsed_data)
+    print(
+        f"Altered program exited with status {response['termination_mode']} "
+        f"and accumulator value {response['accumulator']}"
+    )
 
 
 if __name__ == "__main__":
