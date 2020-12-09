@@ -1,7 +1,3 @@
-apply-template:
-	cp -vn advent_of_code_2020/template_module.py advent_of_code_2020/day_$(day).py
-	cp -vn advent_of_code_2020/template_test.py advent_of_code_2020/day_$(day)_test.py
-
 black:
 	black advent_of_code_2020/
 
@@ -19,7 +15,11 @@ setup-day:
 	touch inputs/day_$(day)_input.txt
 	touch puzzles/day_$(day).md
 
-setup-day-with-template: setup-day apply-template
+setup-day-with-template:
+	cp -vn advent_of_code_2020/template_module.py advent_of_code_2020/day_$(day).py
+	cp -vn advent_of_code_2020/template_test.py advent_of_code_2020/day_$(day)_test.py
+	touch inputs/day_$(day)_input.txt
+	touch puzzles/day_$(day).md
 
 stage-day:
 	git add advent_of_code_2020/day_$(day).py
