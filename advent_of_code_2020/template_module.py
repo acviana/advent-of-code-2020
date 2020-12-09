@@ -15,5 +15,5 @@ def main() -> None:
     parsed_data = parse_data(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
