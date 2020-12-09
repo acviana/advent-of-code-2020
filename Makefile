@@ -19,6 +19,8 @@ setup-day:
 	touch inputs/day_$(day)_input.txt
 	touch puzzles/day_$(day).md
 
+setup-day-with-template: setup-day apply-template
+
 stage-day:
 	git add advent_of_code_2020/day_$(day).py
 	git add advent_of_code_2020/day_$(day)_test.py
