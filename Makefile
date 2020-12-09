@@ -1,3 +1,7 @@
+apply-template:
+	cp -vn advent_of_code_2020/template_module.py advent_of_code_2020/day_$(day).py
+	cp -vn advent_of_code_2020/template_test.py advent_of_code_2020/day_$(day)_test.py
+
 black:
 	black advent_of_code_2020/
 
