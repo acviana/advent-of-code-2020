@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 
 
 def load_data() -> List[str]:
@@ -12,7 +12,7 @@ def parse_data(data: List[str]):
 
 def main() -> None:
     data = load_data()
-    parsed_data = parse_data(data)
+    parse_data(data)
 
 
 if __name__ == "__main__":

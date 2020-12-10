@@ -20,18 +20,20 @@ def find_invalid_number(number_list: List[int], preamble_size: int) -> int:
         result = check_valid_number(preamble=preamble, check_value=check_value)
         if not result:
             return check_value
+    assert False
 
 
-def find_encryption_set(number_list, check_value):
+def find_encryption_set(number_list: List[int], check_value: int) -> int:
     for window_size in range(2, len(number_list)):
         number_groups = get_number_groups(number_list, window_size)
         for number_group in number_groups:
             if sum(number_group) == check_value:
                 number_group.sort()
                 return number_group[0] + number_group[-1]
+    assert False
 
 
-def get_number_groups(number_list, window_size):
+def get_number_groups(number_list: List[int], window_size: int) -> List[List[int]]:
     return [
         number_list[position : position + window_size]
         for position in range(0, len(number_list))
