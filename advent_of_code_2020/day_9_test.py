@@ -1,5 +1,6 @@
 from advent_of_code_2020.day_9 import (
     check_valid_number,
+    find_encryption_set,
     find_invalid_number,
 )
 
@@ -35,3 +36,7 @@ def test_check_valid_number():
 
 def test_find_invalid_number():
     assert find_invalid_number(TEST_DATA, 5) == 127
+
+
+def test_find_encrpytion_set():
+    assert find_encryption_set(TEST_DATA, 127) == 62

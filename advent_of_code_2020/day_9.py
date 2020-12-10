@@ -22,10 +22,29 @@ def find_invalid_number(number_list: List[int], preamble_size: int) -> int:
             return check_value
 
 
+def find_encryption_set(number_list, check_value):
+    for window_size in range(2, len(number_list)):
+        number_groups = get_number_groups(number_list, window_size)
+        for number_group in number_groups:
+            if sum(number_group) == check_value:
+                number_group.sort()
+                return number_group[0] + number_group[-1]
+
+
+def get_number_groups(number_list, window_size):
+    return [
+        number_list[position : position + window_size]
+        for position in range(0, len(number_list))
+    ]
+
+
 def main() -> None:
     data = load_data()
     result = find_invalid_number(data, 25)
     print(f"First number to fail check is: {result}")
+
+    result = find_encryption_set(data, result)
+    print(f"XMAS encryption vulnerability is {result}")
 
 
 if __name__ == "__main__":
