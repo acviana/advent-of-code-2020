@@ -59,19 +59,29 @@ TEST_DATA_FINAL = [item.strip() for item in TEST_DATA_FINAL.split("\n")]
 
 
 def test_get_data_slice():
-    assert get_data_slice(5, 5, TEST_DATA_1) == ['.LL', 'LLL', 'L..']
-    assert get_data_slice(0, 0, TEST_DATA_1) == ['L.', 'LL']
-    assert get_data_slice(0, 9, TEST_DATA_1) == ['LL', 'LL']
-    assert get_data_slice(9, 0, TEST_DATA_1) == ['L.', 'L.']
-    assert get_data_slice(9, 9, TEST_DATA_1) == ['.L', 'LL']
+    assert get_data_slice(5, 5, TEST_DATA_1) == [".LL", "LLL", "L.."]
+    assert get_data_slice(0, 0, TEST_DATA_1) == ["L.", "LL"]
+    assert get_data_slice(0, 9, TEST_DATA_1) == ["LL", "LL"]
+    assert get_data_slice(9, 0, TEST_DATA_1) == ["L.", "L."]
+    assert get_data_slice(9, 9, TEST_DATA_1) == [".L", "LL"]
 
 
 def test_get_neighbors():
-    assert get_neighbors(get_data_slice(5, 5, TEST_DATA_1), TEST_DATA_1[5][5]) == Counter({'L': 5, '.': 3})
-    assert get_neighbors(get_data_slice(0, 0, TEST_DATA_1), TEST_DATA_1[0][0]) == Counter({'L': 2, '.': 1})
-    assert get_neighbors(get_data_slice(0, 9, TEST_DATA_1), TEST_DATA_1[0][9]) == Counter({'L': 3})
-    assert get_neighbors(get_data_slice(9, 0, TEST_DATA_1), TEST_DATA_1[9][0]) == Counter({'.': 2, 'L': 1})
-    assert get_neighbors(get_data_slice(9, 9, TEST_DATA_1), TEST_DATA_1[9][9]) == Counter({'L': 2, '.': 1})
+    assert get_neighbors(
+        get_data_slice(5, 5, TEST_DATA_1), TEST_DATA_1[5][5]
+    ) == Counter({"L": 5, ".": 3})
+    assert get_neighbors(
+        get_data_slice(0, 0, TEST_DATA_1), TEST_DATA_1[0][0]
+    ) == Counter({"L": 2, ".": 1})
+    assert get_neighbors(
+        get_data_slice(0, 9, TEST_DATA_1), TEST_DATA_1[0][9]
+    ) == Counter({"L": 3})
+    assert get_neighbors(
+        get_data_slice(9, 0, TEST_DATA_1), TEST_DATA_1[9][0]
+    ) == Counter({".": 2, "L": 1})
+    assert get_neighbors(
+        get_data_slice(9, 9, TEST_DATA_1), TEST_DATA_1[9][9]
+    ) == Counter({"L": 2, ".": 1})
 
 
 def test_get_next_state():
